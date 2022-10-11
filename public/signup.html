@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+    <title>申請帳號</title>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>申請帳號</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form onsubmit="event.preventDefault() ; addAccount(event.target)">
+          <ion-item>
+            <ion-label position="floating">帳號名稱</ion-label>
+            <ion-input type="string" name="username"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">密碼</ion-label>
+            <ion-input type="password" name="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">再次輸入密碼</ion-label>
+            <ion-input type="password" name="re_password"></ion-input>
+          </ion-item>
+          <br />
+          <div class="ion-text-center">
+            <ion-button type="submit">提交</ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ion-app>
+    <script type="module">
+      import { toastController } from "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js";
+      window.toastController = toastController;
+    </script>
+    <script>
+      async function addAccount(form) {
+        try {
+          let res = await fetch("/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username: form.username.value,
+              password: form.password.value,
+              re_password: form.re_password.value,
+            }),
+          });
+          let json = await res.json();
+
+          if (json.error) {
+            let toast = await toastController.create({
+              message: json.error,
+              color: "danger",
+              duration: 4000,
+            });
+            toast.present();
+            return;
+          }
+          let toast = await toastController.create({
+            message: "你已成功申請帳號，歡迎!",
+            duration: 3000,
+          });
+          toast.present();
+          form.reset();
+          setTimeout(() => {
+            location.href = "/index.html";
+          }, 2000);
+          return;
+        } catch (error) {
+          let toast = await toastController.create({
+            message: String(error),
+            color: "danger",
+            duration: 4000,
+          });
+          toast.present();
+          return;
+        }
+      }
+    </script>
+  </body>
+</html>

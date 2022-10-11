@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+
+    <title>編輯產品</title>
+    <style>
+      table {
+        width: 99%;
+      }
+      thead tr th {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: skyblue;
+      }
+      tbody tr td {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: lightyellow;
+      }
+      .function-btn {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>編輯產品</ion-title>
+          <ion-buttons slot="start">
+            <ion-back-button
+              default-href="#"
+              onclick="location.href='/staff-item-management-page.html'"
+            ></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form
+          onsubmit="event.preventDefault(); editItem(event.target)"
+          enctype="multipart/form-data"
+        >
+          <ion-item>
+            <ion-label position="floating">分類</ion-label>
+            <ion-input type="string" name="category"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">產品名稱</ion-label>
+            <ion-input type="string" name="name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">產品價錢</ion-label>
+            <ion-input type="number" step="0.01" name="price"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">產品規格</ion-label>
+            <ion-input type="string" name="spec"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">產品重量{kg)</ion-label>
+            <ion-input type="number" step="0.01" name="weight"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">入貨數量</ion-label>
+            <ion-input type="number" name="quantity"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>是否為產品？</ion-label>
+            <ion-toggle slot="end" name="is_product" checked></ion-toggle>
+          </ion-item>
+          <ion-note style="margin-left: 5%">取消勾選為非賣品/禮品</ion-note>
+          <ion-item>
+            <ion-label>是否為熱賣產品？</ion-label>
+            <ion-toggle slot="end" name="is_hot_item"></ion-toggle>
+          </ion-item>
+          <div style="max-width: 80vw">
+            <img class="item-image" src="item-image" alt="{IMAGE}" />
+          </div>
+          <br />
+          <div class="function-btn">
+            <ion-button type="submit">更新產品</ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ion-app>
+    <script type="module">
+      import { toastController } from "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js";
+      window.toastController = toastController;
+    </script>
+    <script>
+      let params = new URLSearchParams(location.search);
+      let id = params.get("id");
+      async function requestItemInfo(id) {
+        let res = await fetch(`/staff/itemInfo/${id}`);
+        let json = await res.json();
+        let itemObj = json[0];
+
+        let form = document.querySelector("form");
+        form.querySelector("[name=category]").value = itemObj.category;
+        form.querySelector("[name=name]").value = itemObj.name;
+        form.querySelector("[name=price]").value = itemObj.price;
+        form.querySelector("[name=spec]").value = itemObj.spec;
+        form.querySelector("[name=weight]").value = itemObj.weight;
+        form.querySelector("[name=quantity]").value = itemObj.quantity;
+        form.querySelector("[name=is_product]").checked = itemObj.is_product;
+        form.querySelector("[name=is_hot_item]").checked = itemObj.is_hot_item;
+        form.querySelector(
+          "[class=item-image]"
+        ).src = `../itemPhoto/${itemObj.photo}`;
+      }
+      requestItemInfo(id);
+
+      async function editItem(form) {
+        let res = await fetch(`/staff/item/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category: form.category.value,
+            name: form.name.value,
+            price: form.price.value,
+            spec: form.spec.value,
+            weight: form.weight.value,
+            quantity: form.quantity.value,
+            is_product: form.is_product.value,
+            is_hot_item: form.is_hot_item.value,
+          }),
+        });
+        let json = await res.json();
+        if (json.error) {
+          let toast = await toastController.create({
+            message: json.error,
+            color: "danger",
+            duration: 4000,
+          });
+          toast.present();
+          return;
+        }
+        let toast = await toastController.create({
+          message: "Successfully edit the item",
+          duration: 3000,
+        });
+        toast.present();
+        form.reset();
+        if (form.is_product.value == false) {
+          setTimeout(() => {
+            location.href = "/staff-gift-list-page.html";
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            location.href = "/staff-item-list-page.html";
+          }, 2000);
+        }
+        return;
+      }
+    </script>
+  </body>
+</html>

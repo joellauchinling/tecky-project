@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+    <title>員工版面</title>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>員工版面</ion-title>
+          <ion-buttons slot="start">
+            <ion-back-button
+              default-href="#"
+              onclick="location.href='/index.html'"
+            ></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-list>
+          <ion-item href="./staff-item-management-page.html">
+            <ion-label>庫存管理</ion-label>
+          </ion-item>
+          <ion-item href="./staff-order-management.html">
+            <ion-label>訂單管理</ion-label>
+          </ion-item>
+          <ion-item href="./staff-customer-management.html">
+            <ion-label>客戶管理</ion-label>
+          </ion-item>
+          <ion-item href="./staff-coupon-management-page.html">
+            <ion-label>優惠管理</ion-label>
+          </ion-item>
+          <ion-item href="./staff-password-change.html">
+            <ion-label>更改密碼</ion-label>
+          </ion-item>
+        </ion-list>
+        <br />
+        <div class="ion-text-center">
+          <ion-button expend="block" color="danger" onclick="logout()"
+            >登出</ion-button
+          >
+        </div>
+      </ion-content>
+    </ion-app>
+    <script type="module">
+      import { toastController } from "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js";
+      window.toastController = toastController;
+    </script>
+    <script>
+      async function logout() {
+        let res = await fetch("/logout", { method: "POST" });
+        if (res.ok) {
+          let toast = await toastController.create({
+            message: "你已成功登出，即將跳回主頁",
+            duration: 2000,
+          });
+          toast.present();
+          setTimeout(() => {
+            location.href = "/index.html";
+          }, 2000);
+        }
+        return;
+      }
+    </script>
+  </body>
+</html>

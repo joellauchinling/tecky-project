@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+
+    <title>編輯優惠卷</title>
+    <style>
+      table {
+        width: 99%;
+      }
+      thead tr th {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: skyblue;
+      }
+      tbody tr td {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: lightyellow;
+      }
+      .function-btn {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>編輯優惠卷</ion-title>
+          <!-- <ion-buttons>
+            <ion-button href="./staff-coupon-management-page.html">
+              <ion-icon name="arrow-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons> -->
+          <ion-buttons slot="start">
+            <ion-back-button
+              default-href="#"
+              onclick="location.href='/staff-coupon-management-page.html'"
+            ></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form onsubmit="event.preventDefault(); editCoupon(event.target)">
+          <ion-item>
+            <ion-label position="stacked">優惠碼</ion-label>
+            <ion-input type="string" name="code"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">優惠金額</ion-label>
+            <ion-input type="number" name="amount"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">優惠卷總數</ion-label>
+            <ion-input type="number" name="no_of_coupon"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">必須大過此金額才能使用</ion-label>
+            <ion-input type="number" name="condition"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">可使用次數</ion-label>
+            <ion-input type="number" name="max_claim"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">開始日期: </ion-label>
+            <ion-input type="date" name="start_date" placeholder=""></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">結束日期: </ion-label>
+            <ion-input type="date" name="end_date"></ion-input>
+          </ion-item>
+          <br />
+          <div class="function-btn">
+            <ion-button type="submit">編輯優惠卷</ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ion-app>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script type="module">
+      import { toastController } from "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js";
+      window.toastController = toastController;
+    </script>
+    <script>
+      let params = new URLSearchParams(location.search);
+      let id = params.get("id");
+
+      async function requestCouponInfo(id) {
+        let res = await fetch(`/staff/couponInfo/${id}`);
+        let json = await res.json();
+        let couponObj = json[0];
+        let form = document.querySelector("form");
+        form.querySelector("[name=code]").value = couponObj.code;
+        form.querySelector("[name=amount]").value = couponObj.amount;
+        form.querySelector("[name=no_of_coupon]").value =
+          couponObj.no_of_coupon;
+        form.querySelector("[name=condition]").value = couponObj.condition;
+        form.querySelector("[name=max_claim]").value = couponObj.max_claim;
+        form.querySelector("[name=start_date]").value = dayjs(
+          couponObj.start_date
+        ).format("YYYY-MM-DD");
+        form.querySelector("[name=end_date]").value = dayjs(
+          couponObj.end_date
+        ).format("YYYY-MM-DD");
+
+        // let form = document.querySelectorAll("form ion-input");
+        // form[0].value = couponObj.code;
+        // form[1].value = couponObj.amount;
+        // form[2].value = couponObj.no_of_coupon;
+        // form[3].value = couponObj.condition;
+        // form[4].value = couponObj.max_claim;
+        // form[5].value = dayjs(couponObj.start_date).format("YYYY-MM-DD");
+        // form[6].value = dayjs(couponObj.end_date).format("YYYY-MM-DD");
+      }
+      requestCouponInfo(id);
+
+      async function editCoupon(form) {
+        let res = await fetch(`/staff/coupon/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            code: form.code.value,
+            amount: form.amount.value,
+            no_of_coupon: form.no_of_coupon.value,
+            condition: form.condition.value,
+            max_claim: form.max_claim.value,
+            start_date: form.start_date.value,
+            end_date: form.end_date.value,
+          }),
+        });
+        let json = await res.json();
+        if (json.error) {
+          let toast = await toastController.create({
+            message: json.error,
+            color: "danger",
+            duration: 4000,
+          });
+          toast.present();
+          return;
+        }
+        let toast = await toastController.create({
+          message: "Successfully edit the coupon",
+          duration: 3000,
+        });
+        toast.present();
+        form.reset();
+        setTimeout(() => {
+          location.href = "./staff-coupon-management-page.html";
+        }, 2000);
+        return;
+      }
+    </script>
+  </body>
+</html>

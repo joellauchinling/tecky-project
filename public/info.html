@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <title>Account Information</title>
+</head>
+<style>
+    .table {
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    border: 1px ;
+    background-color: lightgray;
+    border-radius: 20px;
+    padding: 10px 0px;
+    }
+
+    table tr td {
+        color: blueviolet;
+        text-align: center;
+    }
+
+    /* .button {
+        text-align: center;
+    } */
+
+
+</style>
+<body>
+<ion-app>
+    <!-- ------------TOP------------- -->
+    <ion-header>
+        <ion-toolbar>
+            <ion-title>帳戶資料</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+</html>
+
+<!-- ----------Section for information------------- -->
+<div  class="table">
+    <table>
+        <tr>
+            <th>帳户AC</th>
+            <tbody>
+            <td class="ctm-name">AC</td>
+            </tbody>
+        </tr>
+
+        <tr>
+            <th>等級</th>
+            <tbody>
+            <td class="ctm-is_vip">is_vip</td>
+            </tbody>
+        </tr>
+
+        <tr>
+            <th>累積消費</th>
+            <tbody>
+            <td class="ctm-consumption">consumption</td>
+            </tbody>
+        </tr>
+
+        <tr>
+            <th>享有折扣</th>
+            <tbody>
+            <td class="ctm-discount">discount</td>
+            </tbody>
+        </tr>
+    </table>
+</div>
+
+<!-- <div class="button">
+<ion-button color="secondary" size="small">返回主頁</ion-button>
+</div> -->
+
+<!-- ----------Tab------------- -->
+
+<ion-tab-bar slot="bottom">
+    <ion-tab-button href="./index.html">
+    <ion-label>首頁</ion-label>
+    <ion-icon name="home"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="./category.html">
+    <ion-label>分類</ion-label>
+    <ion-icon name="list"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="/profile">
+    <ion-label>會員</ion-label>
+    <ion-icon name="person"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button href="./toCart.html">
+    <ion-label>購物車</ion-label>
+    <ion-icon name="cart"></ion-icon>
+    </ion-tab-button>
+</ion-tab-bar>
+
+</ion-app>
+<script src="info.js"></script>
+</script>
+</body>
+</html>

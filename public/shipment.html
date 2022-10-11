@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+    <title>運送資料</title>
+    <style>
+      form {
+        padding-top: 2vh;
+        padding-left: 5vw;
+      }
+      label {
+        margin-right: 1vw;
+      }
+    </style>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>運送資料</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form 
+        onsubmit="event.preventDefault(); addOrder(event.target)"
+        enctype="multipart/form-data">
+          <label for="area">區域</label>
+          <ion-list>
+            <ion-item>
+              <ion-select placeholder="請選擇區域" id="area">
+                <ion-select-option class="areaName">港島區</ion-select-option>
+                <!-- <ion-select-option value="2">九龍區</ion-select-option> -->
+                <!-- <ion-select-option value="3">新界區</ion-select-option> -->
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <label for="district">分區</label>
+          <ion-list>
+            <ion-item>
+              <ion-select placeholder="請選擇分區" id="district">
+                <ion-select-option class="districtName"
+                  >中西區</ion-select-option
+                >
+                <!-- <ion-select-option value="2">灣仔</ion-select-option>
+                <ion-select-option value="3">東區</ion-select-option>
+                <ion-select-option value="4">南區</ion-select-option>
+                <ion-select-option value="5">油尖旺</ion-select-option>
+                <ion-select-option value="6">深水埗</ion-select-option>
+                <ion-select-option value="7">九龍城</ion-select-option>
+                <ion-select-option value="8">黃大仙</ion-select-option>
+                <ion-select-option value="9">觀塘</ion-select-option>
+                <ion-select-option value="10">葵青</ion-select-option>
+                <ion-select-option value="11">荃灣</ion-select-option>
+                <ion-select-option value="12">屯門</ion-select-option>
+                <ion-select-option value="13">元朗</ion-select-option>
+                <ion-select-option value="14">北區</ion-select-option>
+                <ion-select-option value="15">大埔</ion-select-option>
+                <ion-select-option value="16">沙田</ion-select-option>
+                <ion-select-option value="17">西貢</ion-select-option>
+                <ion-select-option value="18">離島</ion-select-option> -->
+              </ion-select>
+            </ion-item>
+          </ion-list>
+          <label for="address">地址</label>
+          <ion-item>
+            <ion-input type="text" name="address"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-text-right">運費: </ion-label>
+            <div class="fee">{100}</div>
+          </ion-item>
+          <ion-item>
+            <ion-label class="ion-text-right">訂單總計: </ion-label>
+            <div class="total">{100}</div>
+          </ion-item>
+          <ion-button style="margin: 1rem" expand="block" type="submit">確認訂單，前往付款証明上傳</ion-button
+          >
+        </form>
+      </ion-content>
+    </ion-app>
+    <script src="shipment.js"></script>
+  </body>
+</html>

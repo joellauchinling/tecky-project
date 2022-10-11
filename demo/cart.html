@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+        <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+        <title>Cart</title>
+        <style>
+            table {
+                padding-left: 1vw;
+                padding-right: 1vw;
+            }
+            tbody td{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <ion-app>
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>購物車</ion-title>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content>
+                <table id="cartTable">
+                    <thead>
+                        <tr style="height: 8vh">
+                            <th style="width: 30vw">商品名稱</th>
+                            <th style="width: 10vw">單價</th>
+                            <th style="width: 40vw">數量</th>
+                            <th style="width: 10vw">金額</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Sample item</td>
+                            <td>$100</td>
+                            <td>
+                                <ion-buttons  style="justify-content: center;">
+                                    <ion-button>
+                                        <ion-icon name="caret-down-outline"></ion-icon>
+                                    </ion-button>
+                                    1
+                                    <ion-button>
+                                        <ion-icon name="caret-up-outline"></ion-icon>
+                                    </ion-button>
+                                </ion-buttons>
+                            </td>
+                        </tr>
+                    </tbody> 
+                </table>
+
+                <ion-item><ion-label id="total" class="ion-text-right">總計：</ion-label></ion-item>
+
+                <ion-button expand="block" href="./shipment.html" onclick="sum()">前往運費計算</ion-button>
+
+                <ion-item><ion-label>已從購物車移除的商品</ion-label></ion-item>
+
+                <table id="addBack">
+                    <thead>
+                    <tr style="height: 8vh">
+                        <th style="width: 40vw">商品名稱</th>
+                        <th style="width: 20vw">金額</th>
+                        <th style="width: 40vw">加回購物車</th>
+                    </thead>
+                    <tbody>
+                    </tr>
+                    <tr>
+                        <td>Sample item</td>
+                        <td>$100</td>
+                        <td>
+                            <ion-buttons style="justify-content: center;">
+                                <ion-button>
+                                    <ion-icon name="add-outline"></ion-icon>
+                                </ion-button>
+                            </ion-buttons>
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+
+            </ion-content>
+
+            <ion-tab-bar slot="bottom">
+                <ion-tab-button  href="./index.html">
+                <ion-label>首頁</ion-label>
+                <ion-icon name="home"></ion-icon>
+                </ion-tab-button>
+                <ion-tab-button  href="./category.html">
+                <ion-label>分類</ion-label>
+                <ion-icon name="list"></ion-icon>
+                </ion-tab-button>
+                <ion-tab-button href="/profile">
+                <ion-label>會員</ion-label>
+                <ion-icon name="person"></ion-icon>
+                </ion-tab-button>
+                <ion-tab-button href="./cart.html">
+                <ion-label>購物車</ion-label>
+                <ion-icon name="cart"></ion-icon>
+                </ion-tab-button>
+            </ion-tab-bar>
+
+        </ion-app>
+        <!-- <script src="cart.js"></script> -->
+    </body>
+</html>

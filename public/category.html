@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+    <title>category-layout</title>
+    <style>
+      table {
+        display: flex;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .ion-padding{
+        display: inline-block;
+        text-align: center;
+      }
+
+      .card-button{
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+</head>
+<body>
+  <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>分類</ion-title>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-content">
+        <ion-accordion-group #accordionGroup class="categoryList">
+          <ion-accordion class="accordion" value="vegetable"></ion-accordion>
+        </ion-accordion-group>
+      </ion-content>
+
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button href="./index.html">
+          <ion-label>首頁</ion-label>
+          <ion-icon name="home"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button href="./category.html">
+          <ion-label>分類</ion-label>
+          <ion-icon name="list"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button href="/profile">
+          <ion-label>會員</ion-label>
+          <ion-icon name="person"></ion-icon>
+        </ion-tab-button>
+        <ion-tab-button href="/toCart">
+          <ion-label>購物車</ion-label>
+          <ion-icon name="cart"></ion-icon>
+        </ion-tab-button>
+      </ion-tab-bar>
+  </ion-app>
+</body>
+<script>
+
+let a = document.querySelector('.ion-content');
+console.log('a',a.children[0]);
+
+let b = document
+
+async function loadCategory() {
+  let res = await fetch("/item/item");
+  if (!res.ok) {
+    let message = await res.text();
+    console.log("failed to load category:", message);
+    return;
+  }
+  let json = await res.json();
+let groupedData = {}
+
+for (var i = 0; i < json.length; i++) {
+    var object = json[i];
+
+    if (Object.keys(groupedData).indexOf(object['category']) === -1) {
+        groupedData[object['category']] = [];
+    }
+
+    groupedData[object['category']].push(object);
+}
+
+
+  for (let cat in groupedData) {
+
+    let catName;
+    if (cat == 'fruit'){
+      catName = '水果'
+    } else if (cat == 'vegetable'){
+      catName = '蔬菜'
+    } else if ( cat == 'meat') {
+      catName = '肉類'
+    } else if (cat == 'fish'){
+      catName = '魚類' 
+    } else {
+      catName = cat
+    }
+
+
+
+    let node = a.children[0].cloneNode(true);
+
+    node.querySelector('.accordion').innerHTML= `
+      <ion-item slot="header" color="light">
+        <ion-label id="fruit" class="cat">${catName}</ion-label>
+      </ion-item>
+
+      <table>
+        <div class="ion-padding" slot="content" style="width:100%; "> </div>
+      </table>
+    `;
+    
+    for (let data of groupedData[cat]){
+
+      let card = node.querySelector('.ion-padding')
+      let cNode = card.cloneNode(true)
+      // card.textContent = ''
+      cNode.innerHTML = `
+        <ion-card class="card-template" >
+          <ion-card-header>
+            <ion-card-title>${data.name}</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-item>
+              <img src="../itemPhoto/${data.photo}" alt="${data.name}" class="card-photo" />
+            </ion-item>
+            <ion-item>
+              
+              <ion-label id="card-price" style="text-align: center;">價錢: $${data.price}</ion-label>
+            </ion-item>
+            <div>
+              <ion-button class="card-button" >
+                加入購物車
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>`
+      card.appendChild(cNode)
+
+      let cardBtn = node.querySelector(".card-button");
+      cardBtn.addEventListener("click", () => {
+        addToCart();
+      });
+      async function addToCart() {
+        try {
+          let res = await fetch(
+            `/cart/${data.id}?count=` + (data.cart_quantity + 1),
+            {
+              method: "POST",
+            }
+          );
+          console.log(res);
+  
+          if (res.ok) {
+            let json = await res.json();
+            data.cart_quantity = +json;
+            return;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+
+    a.appendChild(node)
+  }
+}
+loadCategory();
+
+
+
+</script>
+</html>

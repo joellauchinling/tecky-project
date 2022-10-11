@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+    <title>客戶管理</title>
+  </head>
+  <style>
+    .table {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      border-radius: 20px;
+      opacity: 0.8;
+      padding: 10px 0px;
+      overflow: auto;
+    }
+
+    tr th {
+      max-width: 100%;
+      border-bottom: 1px solid grey;
+    }
+
+    tbody tr td {
+      max-width: 100%;
+      padding: 2px;
+      text-align: center;
+    }
+
+    .maintr {
+      border-top: 2px solid grey;
+    }
+
+
+  </style>
+  <body>
+    <ion-app>
+      <!-- ------------TOP------------- -->
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>客戶管理</ion-title>
+          <ion-buttons slot="start">
+            <ion-back-button
+              default-href="#"
+              onclick="location.href='/staff.html'"
+            ></ion-back-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+
+        <!-- ----------Section for Customer list------------- -->
+        <ion-content>
+        <div class="table">
+          <table id="table" style="width: 90%">
+            <thead>
+              <tr>
+                <th>客户ID#</th>
+                <th>客户名</th>
+                <th>等級</th>
+                <th>折扣</th>
+                <th>累積消費</th>
+                <th>電郵</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr class="maintr">
+                <td class="ctm-id">客户ID#</td>
+                <td class="ctm-name">客户名</td>
+                <td class="ctm-level">等級</td>
+                <td class="ctm-discount">折扣</td>
+                <td class="ctm-consumption">累積消費</td>
+                <td class="ctm-email">電郵</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </ion-content>
+    </ion-app>
+    <script src="staff-customer-management.js"></script>
+  </body>
+</html>

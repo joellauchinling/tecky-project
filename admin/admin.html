@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+
+    <title>Admin Page</title>
+    <style>
+      table {
+        width: 100%;
+      }
+      thead tr th {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: skyblue;
+      }
+      tbody tr td {
+        /* max-width: 25%; */
+        padding: 0.5rem 0.2rem;
+        background-color: lightyellow;
+      }
+      .function-btn {
+        display: flex;
+        justify-content: space-around;
+      }
+    </style>
+  </head>
+  <body>
+    <ion-app>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>管理員頁面</ion-title>
+          <ion-buttons slot="end">
+            <ion-button size="small" onclick="loadStaffList()">
+              <ion-icon name="refresh"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form onsubmit="event.preventDefault(); addStaff(event.target)">
+          <ion-item>
+            <ion-label position="floating">員工名字</ion-label>
+            <ion-input type="string" name="username"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">初始密碼</ion-label>
+            <ion-input type="password" name="password"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">重覆輸入一次密碼</ion-label>
+            <ion-input type="password" name="re_password"></ion-input>
+          </ion-item>
+          <br />
+          <div class="function-btn">
+            <ion-button type="submit">新增員工</ion-button>
+            <ion-button class="logout" onclick="logout()">登出</ion-button>
+          </div>
+        </form>
+
+        <table id="staffTable">
+          <thead>
+            <tr>
+              <th style="width: 10%">ID</th>
+              <th style="width: 30%">員工名字</th>
+              <th style="width: 25%">生效狀態</th>
+              <th style="width: 35%">解除/恢復</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td style="padding-left: 0.5rem">123</td>
+              <td>chan tai man the the the</td>
+              <td>disabled</td>
+              <td>
+                <ion-button
+                  class="activateBtn"
+                  size="small"
+                  color="dark"
+                  slot="end"
+                >
+                  <ion-icon name="checkmark"></ion-icon>
+                  &nbsp; Activate
+                </ion-button>
+                <ion-button
+                  class="deactivateBtn"
+                  size="small"
+                  color="dark"
+                  slot="end"
+                >
+                  <ion-icon name="ban"></ion-icon>
+                  &nbsp; Deactivate
+                </ion-button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ion-content>
+    </ion-app>
+    <script type="module">
+      import { toastController } from "https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/index.esm.js";
+      window.toastController = toastController;
+    </script>
+    <script src="./admin.js"></script>
+  </body>
+</html>
